@@ -45,7 +45,6 @@
 #if defined(__ICCARM__) || defined(__CC_ARM) || defined(__GNUC__)
 #include <stdint.h>
 extern uint32_t SystemCoreClock;
-void xPortSysTickHandler(void);
 #endif
 
 #ifndef CMSIS_device_header
@@ -62,6 +61,7 @@ void xPortSysTickHandler(void);
 #define configMAX_PRIORITIES (56)
 
 #define configUSE_PREEMPTION 1
+#define configUSE_TIME_SLICING 1
 #define configUSE_IDLE_HOOK 0
 #define configUSE_TICK_HOOK 0
 #define configUSE_TICKLESS_IDLE 1
@@ -116,9 +116,10 @@ to exclude the API function. */
  * CMSIS-RTOS V2 implmentation requires the following defines
  *
 #define configSUPPORT_STATIC_ALLOCATION          1   <-- cmsis_os threads are
-created using xTaskCreateStatic() API #define configMAX_PRIORITIES (56) <--
-Priority range in CMSIS-RTOS V2 is [0 .. 56] #define
-configUSE_PORT_OPTIMISED_TASK_SELECTION 0    <-- when set to 1,
+created using xTaskCreateStatic() API
+#define configMAX_PRIORITIES (56) <-- Priority range in CMSIS-RTOS V2 is [0 ..
+56]
+#define configUSE_PORT_OPTIMISED_TASK_SELECTION 0    <-- when set to 1,
 configMAX_PRIORITIES can't be more than 32 which is not suitable for the new
 CMSIS-RTOS v2 priority range
 */
@@ -136,7 +137,10 @@ used
 
 */
 
+#define USE_FreeRTOS_HEAP_4 1
+
 /* Cortex-M specific definitions. */
+
 #ifdef __NVIC_PRIO_BITS
 /* __BVIC_PRIO_BITS will be specified when CMSIS is being used. */
 #define configPRIO_BITS __NVIC_PRIO_BITS
