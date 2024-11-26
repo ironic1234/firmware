@@ -1,4 +1,3 @@
-#include "FreeRTOSConfig.h"
 #include "cmsis_os2.h"
 #include "common/phal_F4_F7/adc/adc.h"
 #include "common/phal_F4_F7/dma/dma.h"
