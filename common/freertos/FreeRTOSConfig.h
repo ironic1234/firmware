@@ -65,7 +65,7 @@ extern uint32_t SystemCoreClock;
 #define configUSE_IDLE_HOOK 0
 #define configUSE_TICK_HOOK 0
 #define configUSE_TICKLESS_IDLE 1
-#define configSUPPORT_STATIC_ALLOCATION 0
+#define configSUPPORT_STATIC_ALLOCATION 1
 #define configCPU_CLOCK_HZ (SystemCoreClock)
 #define configTICK_RATE_HZ ((TickType_t)1000)
 #define configMINIMAL_STACK_SIZE ((uint16_t)128)
@@ -116,12 +116,12 @@ to exclude the API function. */
  * CMSIS-RTOS V2 implmentation requires the following defines
  *
 #define configSUPPORT_STATIC_ALLOCATION          1   <-- cmsis_os threads are
-created using xTaskCreateStatic() API
+    created using xTaskCreateStatic() API
 #define configMAX_PRIORITIES (56) <-- Priority range in CMSIS-RTOS V2 is [0 ..
-56]
+    56]
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION 0    <-- when set to 1,
-configMAX_PRIORITIES can't be more than 32 which is not suitable for the new
-CMSIS-RTOS v2 priority range
+    configMAX_PRIORITIES can't be more than 32 which is not suitable for the new
+    CMSIS-RTOS v2 priority range
 */
 
 /* the CMSIS-RTOS V2 FreeRTOS wrapper is dependent on the heap implementation
@@ -185,6 +185,5 @@ header file. */
    sure the system and peripherials are using a different time base (TIM based
    for example).
  */
-#define USE_CUSTOM_SYSTICK_HANDLER_IMPLEMENTATION 1
 
 #endif /* FREERTOS_CONFIG_H */
