@@ -12,7 +12,7 @@ function(make_freertos_library LIB_NAME)
         PUBLIC ${CMAKE_SOURCE_DIR}/common/freertos
     )
 
-    file(GLOB glob_sources "${LIB_PATH}/*.c" "${LIB_PATH}/CMSIS_RTOS_V2/*.c" "${LIB_PATH}/portable/GCC/ARM_CM4F/*.c")
+    file(GLOB glob_sources "${LIB_PATH}/*.c" "${LIB_PATH}/CMSIS_RTOS_V2/*.c" "${LIB_PATH}/portable/GCC/ARM_CM4F/*.c" "${LIB_PATH}/portable/MemMang/heap_4.c")
     target_sources(${LIB_NAME} 
         PUBLIC ${glob_sources}
     )
