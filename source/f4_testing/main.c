@@ -5,7 +5,6 @@
 #include "common/phal_F4_F7/rcc/rcc.h"
 #include "common/phal_F4_F7/spi/spi.h"
 #include "common/phal_F4_F7/usart/usart.h"
-#include "common/psched/psched.h"
 #include "string.h"
 
 #include "main.h"
@@ -106,6 +105,9 @@ SPI_InitConfig_t spi_config_nonDMA = {
     .tx_dma_cfg = 0,
     .periph = SPI1};
 
+osMutexId_t     usart_mutex;
+osSemaphoreId_t spi_semaphore;
+
 char msg[100];
 
 void HardFault_Handler();
@@ -115,6 +117,15 @@ void testUsart();
 
 int main()
 {
+    osKernelInitialize();
+
+    usart_mutex = osMutexNew(NULL);
+    spi_semaphore = osSemaphoreNew(1, 1, NULL);
+
+    if (!usart_mutex || !spi_semaphore)
+    {
+        HardFault_Handler();
+    }
     if (0 != PHAL_configureClockRates(&clock_config))
     {
         HardFault_Handler();
@@ -144,11 +155,10 @@ int main()
     PHAL_startADC(ADC1);
     PHAL_usartRxDma(&lcd, (uint16_t *) msg, 5, 1);
     /* Task Creation */
-    schedInit(APB1ClockRateHz);
-    taskCreate(ledblink, 50);
-    taskCreate(testUsart, 100);
+    osThreadNew(ledblink, NULL, NULL);
+    osThreadNew(testUsart, NULL, NULL);
+    osKernelStart();
     /* Schedule Periodic tasks here */
-    schedStart();
     return 0;
 }
 
@@ -167,14 +177,21 @@ void usart_recieve_complete_callback(usart_init_t *handle)
 void testUsart()
 {
     char *txmsg = "Hello World!\n";
-    PHAL_usartTxDma(&lcd, (uint16_t *) txmsg, 13);
-    if (strcmp(msg, "hello") == 0)
+    while (1)
     {
-        PHAL_writeGPIO(GPIOD, 14, 1);
-    }
-    else
-    {
-        PHAL_writeGPIO(GPIOD, 14, 0);
+        if (osMutexAcquire(usart_mutex, osWaitForever) == osOK)
+        {
+            PHAL_usartTxDma(&lcd, (uint16_t *) txmsg, 13);
+            if (strcmp(msg, "hello") == 0)
+            {
+                PHAL_writeGPIO(GPIOD, 14, 1);
+            }
+            else
+            {
+                PHAL_writeGPIO(GPIOD, 14, 0);
+            }
+            osMutexRelease(usart_mutex);
+        }
     }
 }
 
@@ -182,24 +199,33 @@ void ledblink()
 {
     uint8_t out_data[3] = {WHO_AM_I, 0, 0};
     uint8_t in_data[3] = {0};
-    // PHAL_SPI_transfer_noDMA(&spi_config, &out_data, 1, 1, in_data);
-    while (PHAL_SPI_busy(&spi_config))
-        ;
-    PHAL_SPI_transfer(&spi_config, out_data, 2, in_data);
-    while (PHAL_SPI_busy(&spi_config))
-        ;
 
-    uint8_t in_data_nonDMA[3] = {0};
-    PHAL_SPI_transfer_noDMA(&spi_config_nonDMA, out_data, 1, 1, in_data_nonDMA);
-    if (in_data[1] == I_AM_HIM)
-        PHAL_writeGPIO(GPIOD, 13, 1);
-    else
-        PHAL_writeGPIO(GPIOD, 13, 0);
+    while (1)
+    {
+        if (osSemaphoreAcquire(spi_semaphore, osWaitForever) == osOK)
+        {
 
-    if (in_data_nonDMA[1] == I_AM_HIM)
-        PHAL_writeGPIO(GPIOD, 12, 1);
-    else
-        PHAL_writeGPIO(GPIOD, 12, 0);
+            // PHAL_SPI_transfer_noDMA(&spi_config, &out_data, 1, 1, in_data);
+            while (PHAL_SPI_busy(&spi_config))
+                ;
+            PHAL_SPI_transfer(&spi_config, out_data, 2, in_data);
+            while (PHAL_SPI_busy(&spi_config))
+                ;
+            uint8_t in_data_nonDMA[3] = {0};
+            PHAL_SPI_transfer_noDMA(&spi_config_nonDMA, out_data, 1, 1, in_data_nonDMA);
+            if (in_data[1] == I_AM_HIM)
+                PHAL_writeGPIO(GPIOD, 13, 1);
+            else
+                PHAL_writeGPIO(GPIOD, 13, 0);
+
+            if (in_data_nonDMA[1] == I_AM_HIM)
+                PHAL_writeGPIO(GPIOD, 12, 1);
+            else
+                PHAL_writeGPIO(GPIOD, 12, 0);
+
+            osSemaphoreRelease(spi_semaphore);
+        }
+    }
 }
 
 void HardFault_Handler()
