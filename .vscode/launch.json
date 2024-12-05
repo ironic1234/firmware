@@ -18,7 +18,11 @@
                 "${workspaceFolder}/source/main_module"
             ],
             "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "PDU",
             "cwd": "${workspaceRoot}",
@@ -37,7 +41,11 @@
                 "${workspaceFolder}/source/f4_testing"
             ],
             "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "Dashboard",
             "cwd": "${workspaceRoot}",
@@ -56,7 +64,11 @@
                 "${workspaceFolder}/source/dashboard"
             ],
             "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "Torque Vectoring",
             "cwd": "${workspaceRoot}",
@@ -75,7 +87,11 @@
                 "${workspaceFolder}/source/torque_vector"
             ],
             "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "daq",
             "cwd": "${workspaceRoot}",
@@ -96,6 +112,10 @@
             ],
             "preLaunchTask": "build",
             "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "daq_attach",
             "cwd": "${workspaceRoot}",
@@ -115,6 +135,10 @@
                 "${workspaceFolder}/source/daq"
             ],
             "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "l4_testing",
             "cwd": "${workspaceRoot}",
@@ -133,7 +157,11 @@
                 "${workspaceFolder}/source/l4_testing"
             ],
             "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "f4_testing",
             "cwd": "${workspaceRoot}",
@@ -152,7 +180,11 @@
                 "${workspaceFolder}/source/f4_testing"
             ],
             "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "f7_testing",
             "cwd": "${workspaceRoot}",
@@ -171,7 +203,11 @@
                 "${workspaceFolder}/source/f7_testing"
             ],
             "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "A_Box",
             "cwd": "${workspaceRoot}",
@@ -189,8 +225,12 @@
                 "-d",
                 "${workspaceFolder}/source/a_box"
             ],
-            "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "BL App - Main Module",
             "cwd": "${workspaceRoot}",
@@ -208,8 +248,12 @@
                 "-d",
                 "${workspaceFolder}/source/main_module"
             ],
-            "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "BL App - Dashboard",
             "cwd": "${workspaceRoot}",
@@ -227,8 +271,12 @@
                 "-d",
                 "${workspaceFolder}/source/dashboard"
             ],
-            "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "BL App - Torque Vectoring",
             "cwd": "${workspaceRoot}",
@@ -246,8 +294,12 @@
                 "-d",
                 "${workspaceFolder}/source/torque_vector"
             ],
-            "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "BL App - A_Box",
             "cwd": "${workspaceRoot}",
@@ -265,8 +317,12 @@
                 "-d",
                 "${workspaceFolder}/source/a_box"
             ],
-            "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "BL App - PDU",
             "cwd": "${workspaceRoot}",
@@ -284,8 +340,12 @@
                 "-d",
                 "${workspaceFolder}/source/pdu"
             ],
-            "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "BL App - DAQ",
             "cwd": "${workspaceRoot}",
@@ -303,8 +363,12 @@
                 "-d",
                 "${workspaceFolder}/source/daq"
             ],
-            "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "BL App - l4_testing",
             "cwd": "${workspaceRoot}",
@@ -323,7 +387,11 @@
                 "${workspaceFolder}/source/l4_testing"
             ],
             "preLaunchTask": "build",
-            "runToEntryPoint": "main"
+            "runToEntryPoint": "main",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "BL Bootloader - Main Module",
             "cwd": "${workspaceRoot}",
@@ -341,8 +409,12 @@
                 "-d",
                 "${workspaceFolder}/source/bootloader"
             ],
-            // "preLaunchTask": "build",
-            "runToEntryPoint": "Reset_Handler"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "Reset_Handler",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {
             "name": "BL Bootloader - Dashboard",
@@ -361,8 +433,12 @@
                 "-d",
                 "${workspaceFolder}/source/bootloader"
             ],
-            // "preLaunchTask": "build",
-            "runToEntryPoint": "Reset_Handler"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "Reset_Handler",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "BL Bootloader - Torque Vectoring",
             "cwd": "${workspaceRoot}",
@@ -380,8 +456,12 @@
                 "-d",
                 "${workspaceFolder}/source/bootloader"
             ],
-            // "preLaunchTask": "build",
-            "runToEntryPoint": "Reset_Handler"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "Reset_Handler",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {
             "name": "BL Bootloader - A Box",
@@ -400,8 +480,12 @@
                 "-d",
                 "${workspaceFolder}/source/bootloader"
             ],
-            // "preLaunchTask": "build",
-            "runToEntryPoint": "Reset_Handler"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "Reset_Handler",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "BL Bootloader - PDU",
             "cwd": "${workspaceRoot}",
@@ -419,8 +503,12 @@
                 "-d",
                 "${workspaceFolder}/source/bootloader"
             ],
-            // "preLaunchTask": "build",
-            "runToEntryPoint": "Reset_Handler"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "Reset_Handler",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {   "name": "BL Bootloader - DAQ",
             "cwd": "${workspaceRoot}",
@@ -438,8 +526,12 @@
                 "-d",
                 "${workspaceFolder}/source/bootloader"
             ],
-            // "preLaunchTask": "build",
-            "runToEntryPoint": "Reset_Handler"
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "Reset_Handler",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
         },
         {
             "name": "BL Bootloader - L4_Testing",
@@ -458,8 +550,12 @@
                 "-d",
                 "${workspaceFolder}/source/bootloader"
             ],
-            // "preLaunchTask": "build",
-            "runToEntryPoint": "Reset_Handler"
-        },
+            "preLaunchTask": "build_bl",
+            "runToEntryPoint": "Reset_Handler",
+            "liveWatch": {
+                "enabled":true,
+                "samplesPerSecond":5
+            }
+        }
     ]
 }
