@@ -1,72 +1,14 @@
 #include "cmsis_os2.h"
-#include "common/phal_F4_F7/adc/adc.h"
-#include "common/phal_F4_F7/dma/dma.h"
 #include "common/phal_F4_F7/gpio/gpio.h"
 #include "common/phal_F4_F7/rcc/rcc.h"
-#include "common/phal_F4_F7/spi/spi.h"
-#include "common/phal_F4_F7/usart/usart.h"
-#include "string.h"
 
 #include "main.h"
 
-volatile raw_adc_values_t raw_adc_values;
-
-/* ADC Configuration */
-ADCInitConfig_t adc_config = {
-    .clock_prescaler = ADC_CLK_PRESC_6,
-    .resolution = ADC_RES_12_BIT,
-    .data_align = ADC_DATA_ALIGN_RIGHT,
-    .cont_conv_mode = true,
-    .adc_number = 1,
-    //    .overrun         = true,
-    .dma_mode = ADC_DMA_CIRCULAR};
-
-dma_init_t   usart_tx_dma_config = USART2_TXDMA_CONT_CONFIG(NULL, 1);
-dma_init_t   usart_rx_dma_config = USART2_RXDMA_CONT_CONFIG(NULL, 2);
-usart_init_t lcd = {
-    .baud_rate = 250000,
-    .word_length = WORD_8,
-    .stop_bits = SB_ONE,
-    .parity = PT_NONE,
-    .hw_flow_ctl = HW_DISABLE,
-    .ovsample = OV_16,
-    .obsample = OB_DISABLE,
-    .periph = USART2,
-    .wake_addr = false,
-    .usart_active_num = USART2_ACTIVE_IDX,
-    .tx_dma_cfg = &usart_tx_dma_config,
-    .rx_dma_cfg = &usart_rx_dma_config};
-
-#define WHO_AM_I 0x8F
-#define I_AM_HIM 0x3F
-
-// TODO: check prescaler for udpate rate
-ADCChannelConfig_t adc_channel_config[] = {
-    {.channel = 0,
-     .rank = 1,
-     .sampling_time = ADC_CHN_SMP_CYCLES_480},
-};
-
-dma_init_t adc_dma_config = ADC1_DMA_CONT_CONFIG(
-    (uint32_t) &raw_adc_values,
-    sizeof(raw_adc_values) / sizeof(raw_adc_values.testval), 0b01);
-
 GPIOInitConfig_t gpio_config[] = {
-    // GPIO_INIT_ANALOG(GPIOA, 0),
-    GPIO_INIT_OUTPUT(GPIOD, 13, GPIO_OUTPUT_LOW_SPEED),
-    GPIO_INIT_OUTPUT(GPIOD, 12, GPIO_OUTPUT_LOW_SPEED),
-    GPIO_INIT_OUTPUT(GPIOD, 14, GPIO_OUTPUT_LOW_SPEED),
-    GPIO_INIT_OUTPUT(GPIOD, 15, GPIO_OUTPUT_LOW_SPEED),
-    GPIO_INIT_USART2TX_PA2,
-    GPIO_INIT_USART2RX_PA3,
-
-    GPIO_INIT_OUTPUT(SPI_CS_PORT, SPI_CS_PIN, GPIO_OUTPUT_HIGH_SPEED),
-    GPIO_INIT_AF(SPI_SCK_PORT, SPI_SCK_PIN, 5, GPIO_OUTPUT_HIGH_SPEED,
-                 GPIO_OUTPUT_PUSH_PULL, GPIO_INPUT_PULL_DOWN),
-    GPIO_INIT_AF(SPI_MOSI_PORT, SPI_MOSI_PIN, 5, GPIO_OUTPUT_HIGH_SPEED,
-                 GPIO_OUTPUT_PUSH_PULL, GPIO_INPUT_PULL_DOWN),
-    GPIO_INIT_AF(SPI_MISO_PORT, SPI_MISO_PIN, 5, GPIO_OUTPUT_HIGH_SPEED,
-                 GPIO_OUTPUT_OPEN_DRAIN, GPIO_INPUT_OPEN_DRAIN),
+    GPIO_INIT_OUTPUT(GPIOD, ORANGE, GPIO_OUTPUT_LOW_SPEED),
+    GPIO_INIT_OUTPUT(GPIOD, GREEN, GPIO_OUTPUT_LOW_SPEED),
+    GPIO_INIT_OUTPUT(GPIOD, BLUE, GPIO_OUTPUT_LOW_SPEED),
+    GPIO_INIT_OUTPUT(GPIOD, RED, GPIO_OUTPUT_LOW_SPEED),
 
 };
 
@@ -85,47 +27,19 @@ extern uint32_t APB2ClockRateHz;
 extern uint32_t AHBClockRateHz;
 extern uint32_t PLLClockRateHz;
 
-dma_init_t       spi_rx_dma_config = SPI1_RXDMA_CONT_CONFIG(NULL, 2);
-dma_init_t       spi_tx_dma_config = SPI1_TXDMA_CONT_CONFIG(NULL, 1);
-SPI_InitConfig_t spi_config = {
-    .data_len = 8,
-    .nss_sw = true,
-    .nss_gpio_port = SPI_CS_PORT,
-    .nss_gpio_pin = SPI_CS_PIN,
-    .rx_dma_cfg = &spi_rx_dma_config,
-    .tx_dma_cfg = &spi_tx_dma_config,
-    .periph = SPI1};
-
-SPI_InitConfig_t spi_config_nonDMA = {
-    .data_len = 8,
-    .nss_sw = true,
-    .nss_gpio_port = SPI_CS_PORT,
-    .nss_gpio_pin = SPI_CS_PIN,
-    .rx_dma_cfg = 0,
-    .tx_dma_cfg = 0,
-    .periph = SPI1};
-
-osMutexId_t     usart_mutex;
-osSemaphoreId_t spi_semaphore;
-
-char msg[100];
-
 void HardFault_Handler();
 
-void ledblink();
-void testUsart();
+void orange_led_blink();
+void green_led_blink();
+void blue_led_blink();
+void red_led_blink();
+
+volatile uint32_t delay = 1000;
 
 int main()
 {
     osKernelInitialize();
 
-    usart_mutex = osMutexNew(NULL);
-    spi_semaphore = osSemaphoreNew(1, 1, NULL);
-
-    if (!usart_mutex || !spi_semaphore)
-    {
-        HardFault_Handler();
-    }
     if (0 != PHAL_configureClockRates(&clock_config))
     {
         HardFault_Handler();
@@ -135,96 +49,51 @@ int main()
     {
         HardFault_Handler();
     }
-    if (!PHAL_SPI_init(&spi_config))
-        HardFault_Handler();
-    if (!PHAL_initADC(ADC1, &adc_config, adc_channel_config,
-                      sizeof(adc_channel_config) / sizeof(ADCChannelConfig_t)))
-    {
-        HardFault_Handler();
-    }
-    if (!PHAL_initUSART(&lcd, APB1ClockRateHz))
-    {
-        HardFault_Handler();
-    }
-    if (!PHAL_initDMA(&adc_dma_config))
-    {
-        HardFault_Handler();
-    }
-    PHAL_writeGPIO(SPI_CS_PORT, SPI_CS_PIN, 1);
-    PHAL_startTxfer(&adc_dma_config);
-    PHAL_startADC(ADC1);
-    PHAL_usartRxDma(&lcd, (uint16_t *) msg, 5, 1);
+
     /* Task Creation */
-    osThreadNew(ledblink, NULL, NULL);
-    osThreadNew(testUsart, NULL, NULL);
-    osKernelStart();
+    osThreadNew(orange_led_blink, NULL, NULL);
+    osThreadNew(green_led_blink, NULL, NULL);
+    osThreadNew(red_led_blink, NULL, NULL);
+    osThreadNew(blue_led_blink, NULL, NULL);
     /* Schedule Periodic tasks here */
+
+    osKernelStart();
     return 0;
 }
 
-void usart_recieve_complete_callback(usart_init_t *handle)
+void orange_led_blink()
 {
-    if (handle == &lcd)
+    while (1)
     {
-        PHAL_toggleGPIO(GPIOD, 15);
-    }
-    else
-    {
-        PHAL_writeGPIO(GPIOD, 15, 0);
+        PHAL_toggleGPIO(GPIOD, ORANGE);
+        osDelay(delay);
     }
 }
 
-void testUsart()
+void green_led_blink()
 {
-    char *txmsg = "Hello World!\n";
     while (1)
     {
-        if (osMutexAcquire(usart_mutex, osWaitForever) == osOK)
-        {
-            PHAL_usartTxDma(&lcd, (uint16_t *) txmsg, 13);
-            if (strcmp(msg, "hello") == 0)
-            {
-                PHAL_writeGPIO(GPIOD, 14, 1);
-            }
-            else
-            {
-                PHAL_writeGPIO(GPIOD, 14, 0);
-            }
-            osMutexRelease(usart_mutex);
-        }
+        PHAL_toggleGPIO(GPIOD, GREEN);
+        osDelay(delay / 2);
     }
 }
 
-void ledblink()
+void blue_led_blink()
 {
-    uint8_t out_data[3] = {WHO_AM_I, 0, 0};
-    uint8_t in_data[3] = {0};
-
     while (1)
     {
-        if (osSemaphoreAcquire(spi_semaphore, osWaitForever) == osOK)
-        {
+        PHAL_toggleGPIO(GPIOD, BLUE);
+        osDelay(delay * 1.5);
+    }
+}
 
-            // PHAL_SPI_transfer_noDMA(&spi_config, &out_data, 1, 1, in_data);
-            while (PHAL_SPI_busy(&spi_config))
-                ;
-            PHAL_SPI_transfer(&spi_config, out_data, 2, in_data);
-            while (PHAL_SPI_busy(&spi_config))
-                ;
-            uint8_t in_data_nonDMA[3] = {0};
-            PHAL_SPI_transfer_noDMA(&spi_config_nonDMA, out_data, 1, 1, in_data_nonDMA);
-            if (in_data[1] == I_AM_HIM)
-                PHAL_writeGPIO(GPIOD, 13, 1);
-            else
-                PHAL_writeGPIO(GPIOD, 13, 0);
-
-            if (in_data_nonDMA[1] == I_AM_HIM)
-                PHAL_writeGPIO(GPIOD, 12, 1);
-            else
-                PHAL_writeGPIO(GPIOD, 12, 0);
-
-            osSemaphoreRelease(spi_semaphore);
-        }
+void red_led_blink()
+{
+    while (1)
+    {
+        PHAL_toggleGPIO(GPIOD, RED);
+        osDelay(delay * 2);
     }
 }
 

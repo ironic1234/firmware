@@ -32,6 +32,10 @@
                 "interface/stlink.cfg",
                 "target/stm32f4x.cfg"
             ],
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 4
+            },
             "debuggerArgs": [
                 "-d",
                 "${workspaceFolder}/source/f4_testing"
@@ -147,6 +151,10 @@
                 "interface/stlink.cfg",
                 "target/stm32f4x.cfg"
             ],
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 4
+            },
             "debuggerArgs": [
                 "-d",
                 "${workspaceFolder}/source/f4_testing"
