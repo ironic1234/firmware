@@ -1,4 +1,3 @@
-#include "cmsis_os2.h"
 #include "common/phal_F4_F7/gpio/gpio.h"
 #include "common/phal_F4_F7/rcc/rcc.h"
 #include "stm32f407xx.h"
@@ -37,6 +36,13 @@ void red_led_blink();
 
 volatile uint32_t delay = 1000;
 
+LedThreadAttrs_t led_thread_attrs = {
+    .orange = {.name = "Orange_LED", .priority = osPriorityNormal},
+    .green = {.name = "Green_LED", .priority = osPriorityNormal},
+    .red = {.name = "Red_LED", .priority = osPriorityNormal},
+    .blue = {.name = "Blue_LED", .priority = osPriorityNormal}
+};
+
 int main()
 {
     osKernelInitialize();
@@ -57,10 +63,10 @@ int main()
     NVIC_EnableIRQ(EXTI0_IRQn);
 
     /* Task Creation */
-    osThreadNew(orange_led_blink, NULL, NULL);
-    osThreadNew(green_led_blink, NULL, NULL);
-    osThreadNew(red_led_blink, NULL, NULL);
-    osThreadNew(blue_led_blink, NULL, NULL);
+    osThreadId_t orange = osThreadNew(orange_led_blink, NULL, &led_thread_attrs.orange);
+    osThreadId_t green = osThreadNew(green_led_blink, NULL, &led_thread_attrs.green);
+    osThreadId_t red = osThreadNew(red_led_blink, NULL, &led_thread_attrs.red);
+    osThreadId_t blue = osThreadNew(blue_led_blink, NULL, &led_thread_attrs.blue);
     /* Schedule Periodic tasks here */
 
     osKernelStart();
