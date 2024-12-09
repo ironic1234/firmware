@@ -59,6 +59,7 @@ extern uint32_t SystemCoreClock;
  */
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION 0
 #define configMAX_PRIORITIES (56)
+#define configRECORD_STACK_HIGH_ADDRESS 1
 
 #define configUSE_PREEMPTION 1
 #define configUSE_TIME_SLICING 1
