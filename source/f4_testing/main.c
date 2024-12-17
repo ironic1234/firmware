@@ -114,7 +114,7 @@ void EXTI0_IRQHandler()
     if (EXTI->PR & EXTI_PR_PR0)
     {
         EXTI->PR = EXTI_PR_PR0;
-        delay = delay == 1000 ? 500 : 1000;
+        delay = delay == 1000 ? 100 : 1000;
     }
 }
 
