@@ -42,5 +42,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: release-${{ github.sha }}
           name: Firmware Release ${{ github.sha }}
           files: output/firmware*.tar.gz
