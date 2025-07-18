@@ -173,14 +173,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a9f473c8a74e27d069fa4de69fcbb4d60" id="r_a9f473c8a74e27d069fa4de69fcbb4d60"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9f473c8a74e27d069fa4de69fcbb4d60">PHAL_initGPIO</a> (<a class="el" href="structGPIOInitConfig__t.html">GPIOInitConfig_t</a> <a class="el" href="l4__testing_2daq_2daq_8c.html#a25ce4b69d296fc9a3324b494542c2420">config</a>[], uint8_t config_len)</td></tr>
 <tr class="memdesc:a9f473c8a74e27d069fa4de69fcbb4d60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initilize the GPIO perpheral given a list of configuration fields for all of the GPIO pins. Will also enable the GPIO RCC clock.  <br /></td></tr>
 <tr class="separator:a9f473c8a74e27d069fa4de69fcbb4d60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a153b71158c1722aad0892f9ac178b1b2" id="r_a153b71158c1722aad0892f9ac178b1b2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a153b71158c1722aad0892f9ac178b1b2">PHAL_readGPIO</a> (GPIO_TypeDef *bank, uint8_t pin)</td></tr>
-<tr class="memdesc:a153b71158c1722aad0892f9ac178b1b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the state of the input register for the specific GPIO pin.  <br /></td></tr>
-<tr class="separator:a153b71158c1722aad0892f9ac178b1b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6841b05bd806f73f43fb84b15496b789" id="r_a6841b05bd806f73f43fb84b15496b789"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6841b05bd806f73f43fb84b15496b789">PHAL_writeGPIO</a> (GPIO_TypeDef *bank, uint8_t pin, bool value)</td></tr>
-<tr class="memdesc:a6841b05bd806f73f43fb84b15496b789"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a logic value to an output pin.  <br /></td></tr>
-<tr class="separator:a6841b05bd806f73f43fb84b15496b789"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1d7ddb18c0d583fe20834a9ccd650fb" id="r_aa1d7ddb18c0d583fe20834a9ccd650fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa1d7ddb18c0d583fe20834a9ccd650fb">PHAL_toggleGPIO</a> (GPIO_TypeDef *bank, uint8_t pin)</td></tr>
-<tr class="separator:aa1d7ddb18c0d583fe20834a9ccd650fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>GPIO Driver for STM32L432 Devices. </p>
@@ -612,120 +604,6 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>true All GPIOs were a valid configuration format </dd>
 <dd>
 false Some of the GPIOs had an invalid configuration format </dd></dl>
-
-</div>
-</div>
-<a id="a153b71158c1722aad0892f9ac178b1b2" name="a153b71158c1722aad0892f9ac178b1b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a153b71158c1722aad0892f9ac178b1b2">&#9670;&#160;</a></span>PHAL_readGPIO()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool PHAL_readGPIO </td>
-          <td>(</td>
-          <td class="paramtype">GPIO_TypeDef *</td>          <td class="paramname"><span class="paramname"><em>bank</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pin</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Read the state of the input register for the specific GPIO pin. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">bank</td><td>GPIO Bank of the pin </td></tr>
-    <tr><td class="paramname">pin</td><td>GPIO pin number </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true GPIO Input true </dd>
-<dd>
-false GPIO Input false </dd></dl>
-
-</div>
-</div>
-<a id="aa1d7ddb18c0d583fe20834a9ccd650fb" name="aa1d7ddb18c0d583fe20834a9ccd650fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1d7ddb18c0d583fe20834a9ccd650fb">&#9670;&#160;</a></span>PHAL_toggleGPIO()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void PHAL_toggleGPIO </td>
-          <td>(</td>
-          <td class="paramtype">GPIO_TypeDef *</td>          <td class="paramname"><span class="paramname"><em>bank</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pin</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a6841b05bd806f73f43fb84b15496b789" name="a6841b05bd806f73f43fb84b15496b789"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6841b05bd806f73f43fb84b15496b789">&#9670;&#160;</a></span>PHAL_writeGPIO()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void PHAL_writeGPIO </td>
-          <td>(</td>
-          <td class="paramtype">GPIO_TypeDef *</td>          <td class="paramname"><span class="paramname"><em>bank</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>pin</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Write a logic value to an output pin. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">bank</td><td>GPIO Bank of the pin </td></tr>
-    <tr><td class="paramname">pin</td><td>GPIO pin number </td></tr>
-    <tr><td class="paramname">value</td><td>Logical value to write </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
